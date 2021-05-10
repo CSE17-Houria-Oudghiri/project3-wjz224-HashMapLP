@@ -65,30 +65,30 @@ public class HashMapQP<K,V> {
     // returns the value of key if found, otherwise null
     public V get(K key){ // search method O(1)
         int bucketIndex = hash(key.hashCode());
-        HashMaps.QPIterations= 0;
-        if (hashTable[bucketIndex] != null) {
-            HashMaps.QPIterations++;
+        HashMaps.QPIterations= 0; // Iterations using Quadratic Probing which can be referenced to in the main class per key being searched for
+        if (hashTable[bucketIndex] != null) { // checks if the first bucketIndex value is null
+            HashMaps.QPIterations++; // Iterations increment using Quadratic probing in the while loop
             while(!hashTable[bucketIndex].getKey().equals(key)) {
                 int j = 1;
-                bucketIndex = hash(bucketIndex+ j^2); 
+                bucketIndex = hash(bucketIndex+ j^2); // Quadratic probing bucketIndex increase.
                 HashMaps.QPIterations++;
             }
         }
-        return null;
+        return null; // if the first bucketIndex value is null
     }
     // remove a key if found
     public void remove(K key){ // O(1)
-        int bucketIndex = hash(key.hashCode());
-        if(hashTable[bucketIndex] != null) {
-            while(!hashTable[bucketIndex].getKey().equals(key)) {
+        int bucketIndex = hash(key.hashCode()); 
+        if(hashTable[bucketIndex] != null) { 
+            while(!hashTable[bucketIndex].getKey().equals(key)) { // checks if the hashTable value at bucketIndex is equal to key
                 int j = 1;
-                bucketIndex = hash(bucketIndex + j^2);
-                if(hashTable[bucketIndex] == null){
+                bucketIndex = hash(bucketIndex + j^2); // incrementing the bucketIndex using quadratic probing
+                if(hashTable[bucketIndex] == null){ // if the value at bucketIndex is null before finding the value, then the value doesn't exist in the hashTable
                     break;
                 }
-                else if(hashTable[bucketIndex].getKey().equals(key))
-                hashTable[bucketIndex] = null;
-                size--;
+                else if(hashTable[bucketIndex].getKey().equals(key)) // checks if the hashTable value at bucketIndex is equal to the key
+                hashTable[bucketIndex] = null; // removes the bucketIndex value in the hashTable by setting it to null
+                size--; // decrementing the size
                 break;
             }
         }
@@ -99,13 +99,13 @@ public class HashMapQP<K,V> {
         if (hashTable[bucketIndex] != null) {
             while(!hashTable[bucketIndex].getKey().equals(null) && !hashTable[bucketIndex].getKey().equals(key)){
                 int j = 1;
-                bucketIndex = hash(bucketIndex+ j^2);  
-                if(hashTable[bucketIndex] == null){
-                    hashTable[bucketIndex] = new MapEntry<K,V>(key,value);
-                    size ++;
+                bucketIndex = hash(bucketIndex+ j^2);   // quadratic probing 
+                if(hashTable[bucketIndex] == null){ // checks if the value in hashTable at bucketIndex is null
+                    hashTable[bucketIndex] = new MapEntry<K,V>(key,value); // if the value at bucketIndex is empty, add the MapEntry
+                    size ++; // incrementing the size
                     return value;
                 }
-                else if(hashTable[bucketIndex].getKey().equals(key)){
+                else if(hashTable[bucketIndex].getKey().equals(key)){ // CHecks if the value in the hashTable already exists, if it does nothing changes.
                     V old = hashTable[bucketIndex].getValue();
                     hashTable[bucketIndex].value = value;
                     return value;
@@ -113,9 +113,9 @@ public class HashMapQP<K,V> {
             }
         }
         
-        else{
+        else{ // if first value at bucketIndex is null, then add the MapEntry
             hashTable[bucketIndex] = new MapEntry<K,V>(key,value);
-            size ++;
+            size ++; // increment the size
             return value;
         }
         return value;

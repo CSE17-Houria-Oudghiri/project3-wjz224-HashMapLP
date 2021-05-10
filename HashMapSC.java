@@ -66,11 +66,12 @@ public class HashMapSC<K,V> {
             return false;
         }
     }
+    // Seperate chaining using the one from class. Essentially making another list for values with the same bucketIndex
     // returns the value of key if found, otherwise null
     public V get(K key){ // search method O(1)
         HashMaps.SCIterations=0;
         int bucketIndex = hash(key.hashCode());
-        if(hashTable[bucketIndex] != null){
+        if(hashTable[bucketIndex] != null){ 
             LinkedList<MapEntry<K,V>> bucket = hashTable[bucketIndex];
             for(MapEntry<K,V> entry: bucket){ // O(1)
                 HashMaps.SCIterations++;

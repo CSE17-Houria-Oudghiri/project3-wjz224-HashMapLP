@@ -65,9 +65,9 @@ public class HashMapLP<K,V> {
     // returns the value of key if found, otherwise null
     public V get(K key){ // search method O(1)
         int bucketIndex = hash(key.hashCode());
-        HashMaps.LPIterations=0;
+        HashMaps.LPIterations=0;  // Iterations using Linear Probing which can be referenced in the main class for each key being searched for
         if (hashTable[bucketIndex] != null) {
-            HashMaps.LPIterations++;
+            HashMaps.LPIterations++; // Increment the Linear probing while loop iterations 
             while(!hashTable[bucketIndex].getKey().equals(key)) {
                 bucketIndex = hash(bucketIndex+1); // linear probing increasing by 1
                 HashMaps.LPIterations++;
@@ -79,14 +79,14 @@ public class HashMapLP<K,V> {
     public void remove(K key){ // O(1)
         int bucketIndex = hash(key.hashCode());
         if(hashTable[bucketIndex] != null) {
-            while(!hashTable[bucketIndex].getKey().equals(key)) {
+            while(!hashTable[bucketIndex].getKey().equals(key)) { //Checks if the hashTable value at bucketIndex equals the key being searched for
                 bucketIndex = hash(bucketIndex + 1); // linear probing increasing by 1
-                if(hashTable[bucketIndex] == null){
+                if(hashTable[bucketIndex] == null){ // if there is an empty spot before finding the value then it doesn't exist in the hashtable
                     break;
                 }
-                else if(hashTable[bucketIndex].getKey().equals(key))
+                else if(hashTable[bucketIndex].getKey().equals(key)) // sets the hashTable at index to null to remove the value
                 hashTable[bucketIndex] = null;
-                size--;
+                size--; // decrements the size.
                 break;
             }
         }
@@ -95,14 +95,14 @@ public class HashMapLP<K,V> {
     public V put(K key, V value){ // The key is in the hash map  O(1)
         int bucketIndex = hash(key.hashCode());
         if (hashTable[bucketIndex] != null) {
-            while(!hashTable[bucketIndex].getKey().equals(null) && !hashTable[bucketIndex].getKey().equals(key)){
+            while(!hashTable[bucketIndex].getKey().equals(null) && !hashTable[bucketIndex].getKey().equals(key)){ // checks if the value at hashTable at bucketIndex is equal to null or keys
                 bucketIndex = hash(bucketIndex+1);  // linear probing increasing by 1
-                if(hashTable[bucketIndex] == null){ 
+                if(hashTable[bucketIndex] == null){  // if the first bucketIndex found by linear probing is null, then insert the value into the hashTable
                     hashTable[bucketIndex] = new MapEntry<K,V>(key,value);
-                    size ++;
-                    return value;
+                    size ++; // increment the size
+                    return value; // return the value being inserted
                 }
-                else if(hashTable[bucketIndex].getKey().equals(key)){
+                else if(hashTable[bucketIndex].getKey().equals(key)){ // if the bucketIndex value is equal to key, then nothing happens and return the value of the key
                     V old = hashTable[bucketIndex].getValue();
                     hashTable[bucketIndex].value = value;
                     return value;
@@ -110,9 +110,9 @@ public class HashMapLP<K,V> {
             }
         }
         
-        else{
+        else{ // if the first hashTable value using linear probing is null then insert the MapEntry. 
             hashTable[bucketIndex] = new MapEntry<K,V>(key,value);
-            size ++;
+            size ++;  // increment the size
             return value;
         }
         return value;
